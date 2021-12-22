@@ -87,24 +87,15 @@ export class UserDatabase extends BaseDatabase {
     }
   }
 
-  async getSearchUser(search: string): Promise <Object | boolean> {
+  async getSearchUser(nickname: string, email?:string): Promise <any> {
     try {
-      const result = await BaseDatabase
-        .connection("todolist_challenge_user")
-        .where("name", "LIKE", `%${search}%`)
-        .orWhere("nickname", "LIKE", `%${search}%`)
-        .orWhere("email", "LIKE", `%${search}%`)
-      const resultMap = result.map(element => {
-        return {
-          id: element.id,
-          nickname: element.nickname
+        if((nickname && email) || (nickname || email)) {
+          const result = await BaseDatabase
+            .connection("todolist_challenge_user")
+            .orWhere("nickname", "LIKE", `%${nickname}%`)
+            .orWhere("email", "LIKE", `%${email}%`)
+          return result
         }
-      })
-
-      const users = {
-        users: resultMap
-      }
-      return users
 
     } catch (error) {
       console.log(error)
@@ -112,16 +103,20 @@ export class UserDatabase extends BaseDatabase {
     }
   }
 
-  async getResponsibleUser(id: string, column: boolean = false): Promise <InterfaceUser | boolean> {
+  async getFindUser(id: string, table: string = "todolist_challenge_user", column: boolean = false): Promise <InterfaceUser | boolean> {
     try {
       let result
       if(column === false) {
         result = await BaseDatabase
-          .connection("todolist_challenge_user")
+          .connection
+          .select("*")
+          .from(`${table}`)
           .where({id: id})
       } else {
         result = await BaseDatabase
-          .connection("todolist_challenge_user")
+          .connection
+          .select("*")
+          .from(`${table}`)
           .where({responsible_user_id: id})
       }
       return result[0]
