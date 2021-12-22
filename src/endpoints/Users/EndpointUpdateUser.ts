@@ -15,7 +15,6 @@ export class EndpointUpdateUser {
 
       if(!findUser) {
         response.status(404).json({message:`Usuário não encontrado. Por favor, verifique as informações preenchidas`})
-
       } else if((name && nickname && email) && (typeof name === "string" && typeof nickname === "string" && typeof email === "string")) {
         const newUser: InterfaceUser = {
           id,
