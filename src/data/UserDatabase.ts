@@ -2,16 +2,18 @@ import { InterfaceUser } from "../entities/InterfaceUser"
 import BaseDatabase from "./BaseDatabase"
 
 export class UserDatabase extends BaseDatabase {
-  async postCreateUser(id: string, name: string, nickname: string, email: string): Promise <any> {
+  async postCreateUser(user: InterfaceUser): Promise <boolean> {
     try {
       await BaseDatabase
         .connection("todolist_challenge_user")
         .insert({
-          id: id,
-          name: name,
-          nickname: nickname,
-          email: email
+          id: user.id,
+          name: user.name,
+          nickname: user.nickname,
+          email: user.email
         })
+      return true
+
     } catch (error) {
       console.log(error)
       return false
@@ -43,7 +45,7 @@ export class UserDatabase extends BaseDatabase {
         .delete()
         .where({id: userId})
       return true
-      
+
     } catch (error) {
       console.log(error)
       return false
@@ -72,7 +74,7 @@ export class UserDatabase extends BaseDatabase {
     }
   }
 
-  async getUser(id: string): Promise <Object | boolean> {
+  async getUserById(id: string): Promise <Object | boolean> {
     try {
       const result = await BaseDatabase
         .connection("todolist_challenge_user")
