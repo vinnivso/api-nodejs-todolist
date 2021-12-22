@@ -1,5 +1,4 @@
 import express from "express"
-import BaseDatabase from "../../data/BaseDatabase"
 import { CheckUserDatabase } from "../../data/CheckUserDatabase"
 import { UserDatabase } from "../../data/UserDatabase"
 import ManageIdentity from "../../services/ManageIdentity"
