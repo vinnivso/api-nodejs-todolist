@@ -6,8 +6,8 @@ import { EndpointGetUsers } from "./endpoints/Users/EndpointGetUsers"
 import { EndpointUpdateUser } from "./endpoints/Users/EndpointUpdateUser"
 
 //USER - ENDPOINTS
-app.post("/users", new EndpointCreateUser().createUser)
-app.put("/users/edit/:id", new EndpointUpdateUser().updateUser)
-app.delete("/users/edit/:id", new EndpointDeleteUser().deleteUser)
-app.get("/users", new EndpointGetUsers().getUser)
-app.get("/users/:id", new EndpointGetUserById().getUserById)
+app.post("/user", new EndpointCreateUser().createUser)
+app.put("/user/edit/:id", new EndpointUpdateUser().updateUser)
+app.delete("/user/edit/:id", new EndpointDeleteUser().deleteUser)
+app.get("/user", new EndpointGetUsers().getUser)
+app.get("/user/:id", new EndpointGetUserById().getUserById)
