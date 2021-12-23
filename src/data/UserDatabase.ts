@@ -59,7 +59,9 @@ export class UserDatabase extends BaseDatabase {
       const resultMap = result.map(element => {
         return {
           id: element.id,
-          nickname:element.nickname
+          name:element.name,
+          nickname:element.nickname,
+          email:element.email
         }
       })
 
@@ -87,13 +89,13 @@ export class UserDatabase extends BaseDatabase {
     }
   }
 
-  async getSearchUser(nickname: string, email?:string): Promise <any> {
+  async getSearchUser(nickname: string, email?: string | undefined): Promise <any> {
     try {
         if((nickname && email) || (nickname || email)) {
           const result = await BaseDatabase
             .connection("todolist_challenge_user")
-            .orWhere("nickname", "LIKE", `%${nickname}%`)
-            .orWhere("email", "LIKE", `%${email}%`)
+            .where("nickname", "LIKE", `${nickname}`)
+            .orWhere("email", "LIKE", `${email}`)
           return result
         }
 
