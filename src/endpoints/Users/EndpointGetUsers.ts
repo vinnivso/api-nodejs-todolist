@@ -5,8 +5,8 @@ export class EndpointGetUsers {
   async getUser(request:express.Request, response:express.Response): Promise <void> {
     try {
       const {nickname, email} = request.query
-
       let result
+      
       if((nickname || email) && (typeof nickname === "string" || typeof email === "string")) {
         result = await new UserDatabase().getSearchUser(nickname as string, email as string)
         if(result.length === 0) {
