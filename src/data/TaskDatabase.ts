@@ -148,6 +148,43 @@ export class TaskDatabase extends BaseDatabase {
     }
   }
 
+  async getTaskByStatus(status: string): Promise <any> {
+    try {
+      const result = await BaseDatabase
+        .connection("todolist_challenge_task as task")
+        .join("todolist_challenge_user as user", "user.id", "task.creator_user_id")
+        .select(
+          "task.id as task_id",
+          "task.title",
+          "task.description",
+          "task.limit_date",
+          "task.status",
+          "user.id as user_id",
+          "user.nickname"
+        )
+        .where({ "task.status": status })
+
+      const resultModified = result.map((element) => {
+        return {
+          taskId: element.task_id,
+          title: element.title,
+          description: element.description,
+          limitDate: new ManageDate().date_fmt(element.limit_date),
+          status: element.status,
+          creatorUserId: element.user_id,
+          creatorUserNickname: element.nickname
+        }
+      })
+      const tasks = {
+        tasks: resultModified
+      }
+      return tasks
+      
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
 
   async getSearchTask(title: string, description: string, creatorUserId:string): Promise <any> {
     try {
