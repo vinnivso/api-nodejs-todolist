@@ -76,7 +76,7 @@ export class UserDatabase extends BaseDatabase {
     }
   }
 
-  async getUserById(id: string): Promise <Object | boolean> {
+  async getUserById(id: string): Promise <any> {
     try {
       const result = await BaseDatabase
         .connection("todolist_challenge_user")

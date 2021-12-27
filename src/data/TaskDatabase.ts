@@ -1,6 +1,8 @@
 import { InterfaceStatus } from "../entities/InterfaceStatus";
 import { InterfaceTask } from "../entities/InterfaceTask";
+import ManageDate from "../services/ManageDate";
 import BaseDatabase from "./BaseDatabase";
+import { UserDatabase } from "./UserDatabase";
 
 
 export class TaskDatabase extends BaseDatabase {
@@ -98,6 +100,54 @@ export class TaskDatabase extends BaseDatabase {
       return false
     }
   }
+
+  async getResponsibleTask(taskId: string): Promise <Object | boolean> {
+    try {
+      const result = await BaseDatabase
+        .connection("todolist_challenge_responsibletaskrelation as responsible")
+        .join("todolist_challenge_user as user", "user.id", "responsible.responsible_user_id")
+        .select("user.id", "user.nickname")
+        .where({ "responsible.task_id": taskId })
+
+        const users = {
+          users: result
+        }
+        return users
+
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+
+  async getTaskById(taskId:string): Promise <Object | boolean> {
+    try {
+      const result = await BaseDatabase
+        .connection("todolist_challenge_task")
+        .where({id: taskId})
+
+      let task = result[0]
+      const user = await new UserDatabase().getUserById(task.creator_user_id)
+      const responsibleUsers = await this.getResponsibleTask(taskId)
+
+      task = {
+        id: task.id,
+        title: task.title,
+        description: task.description,
+        limitDate: new ManageDate().date_fmt(task.limit_date),
+        status: task.status,
+        creatorUserId: user.id,
+        creatorUserNickname: user.nickname,
+        responsibleUsers: Object.values(responsibleUsers)[0]
+      }
+      return task
+
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+
 
   async getSearchTask(title: string, description: string, creatorUserId:string): Promise <any> {
     try {
