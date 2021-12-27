@@ -1,6 +1,7 @@
 import { app } from "./app"
 import { EndpointAddTaskResponsible } from "./endpoints/Tasks/EndpointAddTaskResponsible"
 import { EndpointCreateTask } from "./endpoints/Tasks/EndpointCreateTask"
+import { EndpointDeleteResponsibleTask } from "./endpoints/Tasks/EndpointDeleteResponsibleTask"
 import { EndpointUpdateStatusTask } from "./endpoints/Tasks/EndpointUpdateStatusTask"
 import { EndpointCreateUser } from "./endpoints/Users/EndpointCreateUser"
 import { EndpointDeleteUser } from "./endpoints/Users/EndpointDeleteUser"
@@ -19,3 +20,4 @@ app.get("/user/:id", new EndpointGetUserById().getUserById)
 app.post("/task", new EndpointCreateTask().createTask)
 app.post("/task/responsible", new EndpointAddTaskResponsible().addTaskResponsible)
 app.put("/task/status/edit", new EndpointUpdateStatusTask().updateStatusTask)
+app.delete("/task/:taskId/responsible/:responsibleUserId", new EndpointDeleteResponsibleTask().deleteResponsibleTask)
