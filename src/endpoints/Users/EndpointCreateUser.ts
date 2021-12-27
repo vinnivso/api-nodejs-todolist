@@ -6,7 +6,6 @@ export class EndpointCreateUser {
   async createUser(request: express.Request, response: express.Response): Promise <void> {
     try {
       const {name, nickname, email} = request.body
-      const id = new ManageIdentity().generateId()
       const [checkUserAvailability] = await new UserDatabase().getSearchUser(nickname, email)
 
       if(typeof name !== "string" || name === "") {
@@ -18,6 +17,7 @@ export class EndpointCreateUser {
       } else if(checkUserAvailability) {
         response.status(406).json({message:`Oops, usuário já encontra-se cadastrado na plataforma`})
       } else {
+        const id = new ManageIdentity().generateId()
         await new UserDatabase().postCreateUser(id, name, nickname, email)
         response.status(201).json({message: `Usuário criado com sucesso`})
       }

@@ -1,4 +1,5 @@
 import { app } from "./app"
+import { EndpointCreateTask } from "./endpoints/Tasks/EndpointCreateTask"
 import { EndpointCreateUser } from "./endpoints/Users/EndpointCreateUser"
 import { EndpointDeleteUser } from "./endpoints/Users/EndpointDeleteUser"
 import { EndpointGetUserById } from "./endpoints/Users/EndpointGetUserById"
@@ -11,3 +12,6 @@ app.put("/user/edit/:id", new EndpointUpdateUser().updateUser)
 app.delete("/user/edit/:id", new EndpointDeleteUser().deleteUser)
 app.get("/user", new EndpointGetUsers().getUser)
 app.get("/user/:id", new EndpointGetUserById().getUserById)
+
+//TASK - ENDPOINTS
+app.post("/task", new EndpointCreateTask().createTask)

@@ -2,6 +2,7 @@ import { InterfaceStatus } from "../entities/InterfaceStatus";
 import { InterfaceTask } from "../entities/InterfaceTask";
 import BaseDatabase from "./BaseDatabase";
 
+
 export class TaskDatabase extends BaseDatabase {
   async postCreateTask(task: InterfaceTask): Promise <boolean>{
     try {
@@ -91,6 +92,23 @@ export class TaskDatabase extends BaseDatabase {
         .delete()
         .where({id: taskId})
       return true
+
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+
+  async getSearchTask(title: string, description: string, creatorUserId:string): Promise <any> {
+    try {
+        if((title && description && creatorUserId)) {
+          const result = await BaseDatabase
+            .connection("todolist_challenge_task")
+            .where("title", "LIKE", `${title}`)
+            .andWhere("description", "LIKE", `${description}`)
+            .andWhere("creator_user_id", "LIKE", `${creatorUserId}`)
+          return result
+        }
 
     } catch (error) {
       console.log(error)
