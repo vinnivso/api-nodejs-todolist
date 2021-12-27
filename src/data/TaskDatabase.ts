@@ -227,6 +227,30 @@ export class TaskDatabase extends BaseDatabase {
     }
   }
 
+  async findTask(id: string, table: string = "todolist_challenge_task", column: boolean = false): Promise <InterfaceTask | boolean> {
+    try {
+      let result
+      column === false?
+        result = await BaseDatabase
+          .connection
+          .select("*")
+          .from(`${table}`)
+          .where({id: id})
+        :
+        result = await BaseDatabase
+          .connection
+          .select("*")
+          .from(`${table}`)
+          .where({task_id: id})
+
+      return result [0]
+
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+
   async getSearchTask(title: string, description: string, creatorUserId:string): Promise <any> {
     try {
         if((title && description && creatorUserId)) {
