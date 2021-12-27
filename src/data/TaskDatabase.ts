@@ -25,7 +25,7 @@ export class TaskDatabase extends BaseDatabase {
 
   async postCreateResponsibleTask(taskId: string, responsibleUserId: string[]): Promise <boolean> {
     try {
-      const input = responsibleUserId.map(element => {
+      const input = responsibleUserId.map((element) => {
         return {
           task_id: taskId,
           responsible_user_id: element

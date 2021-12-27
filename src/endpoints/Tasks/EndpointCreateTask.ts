@@ -35,7 +35,10 @@ export class EndpointCreateTask {
           creator_user_id: creatorUserId
         }
         result = await new TaskDatabase().postCreateTask(newTask)
-        result === false? response.status(404).json({message:`Usuário não encontrado`}) : response.status(201).json({message:`Tarefa criada com sucesso`})
+        result === false?
+          response.status(404).json({message:`Usuário não encontrado`})
+          :
+          response.status(201).json({message:`Tarefa criada com sucesso`})
       }
 
     } catch (e) {

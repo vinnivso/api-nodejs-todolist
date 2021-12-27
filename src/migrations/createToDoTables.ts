@@ -45,7 +45,7 @@ async function createToDoListResponsibleTaskRelationTable():Promise<boolean> {
       CREATE TABLE IF NOT EXISTS todolist_challenge_responsibletaskrelation (
         task_id VARCHAR(255),
         responsible_user_id VARCHAR(255),
-        FOREIGN KEY (task_id) REFERENCES todolist_challenge_user(id) ON DELETE CASCADE,
+        FOREIGN KEY (task_id) REFERENCES todolist_challenge_task(id) ON DELETE CASCADE,
         FOREIGN KEY (responsible_user_id) REFERENCES todolist_challenge_user(id) ON DELETE CASCADE
       );
     `)
