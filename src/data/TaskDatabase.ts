@@ -251,6 +251,42 @@ export class TaskDatabase extends BaseDatabase {
     }
   }
 
+  async findMultipleTaks(id: string[], table: string = "todolist_challenge_task", column: boolean = false): Promise <InterfaceTask | boolean> {
+    try {
+      const fieldsToFind = id.map((field) => {
+        return {
+          id: field
+        }
+      })
+
+      let result
+      if(column === false) {
+        result = await BaseDatabase
+          .connection
+          .select("*")
+          .from(`${table}`)
+          .where(fieldsToFind)
+      } else {
+        const fieldsToFindTaskId = id.map((field) => {
+          return {
+            task_id: field
+          }
+        })
+        result = await BaseDatabase
+        .connection
+        .select("*")
+        .from(`${table}`)
+        .where(fieldsToFindTaskId)
+      }
+      return result[0]
+
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+
+
   async getSearchTask(title: string, description: string, creatorUserId:string): Promise <any> {
     try {
         if((title && description && creatorUserId)) {
