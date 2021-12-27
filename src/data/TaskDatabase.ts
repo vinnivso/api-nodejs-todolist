@@ -1,3 +1,4 @@
+import { table } from "console";
 import { InterfaceStatus } from "../entities/InterfaceStatus";
 import { InterfaceTask } from "../entities/InterfaceTask";
 import ManageDate from "../services/ManageDate";
@@ -280,6 +281,39 @@ export class TaskDatabase extends BaseDatabase {
       }
       return result[0]
 
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+
+  async getTaskCreatedByUser(userId: string): Promise <Object | boolean> {
+    try {
+      const result = await BaseDatabase
+        .connection
+        .select("*")
+        .from("todolist_challenge_user")
+        .where({creator_user_id: userId})
+
+      const user = await new UserDatabase().getUserById(userId)
+
+      const resultModified = result.map((task) => {
+        return {
+          taskId: task.id,
+          title: task.title,
+          description: task.description,
+          limitDate: new ManageDate().date_fmt(task.limit_date),
+          status: task.status,
+          creatorUserId: user.id,
+          creatorUserNickname: user.nickname
+        }
+      })
+
+      const tasks = {
+        tasks: resultModified
+      }
+      return tasks
+      
     } catch (error) {
       console.log(error)
       return false
