@@ -313,7 +313,7 @@ export class TaskDatabase extends BaseDatabase {
         tasks: resultModified
       }
       return tasks
-      
+
     } catch (error) {
       console.log(error)
       return false
@@ -332,6 +332,49 @@ export class TaskDatabase extends BaseDatabase {
           return result
         }
 
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+
+  async getSearchTaskParameter(search: any): Promise <Object | boolean> {
+    try {
+      const result = await BaseDatabase
+        .connection("todolist_challenge_task as task")
+        .join("todolist_challenge_user as user", "user.id", "task.creator_user_id")
+        .select(
+          "task.id as task_id",
+          "task.title",
+          "task.description",
+          "task.limit_date",
+          "task.status",
+          "user.id as user_id",
+          "user.nickname"
+        )
+        .where("task.title", "like", `%${search}%`)
+        .orWhere("task.title", "like", `%${search}%`)
+        .orWhere("task.description", "like", `%${search}%`)
+        .orWhere("task.limit_date", "like", `%${search}%`)
+        .orWhere("user.nickname", "like", `%${search}%`);
+
+        const resultModified = result.map((task) => {
+          return {
+            taskId: task.task_id,
+            title: task.title,
+            description: task.description,
+            limitDate: new ManageDate().date_fmt(task.limit_date),
+            status: task.status,
+            creatorUserId: task.user_id,
+            creatorUserNickname: task.nickname
+          }
+        })
+
+        const tasks = {
+          tasks: resultModified
+        }
+        return tasks
+        
     } catch (error) {
       console.log(error)
       return false
