@@ -175,11 +175,52 @@ export class TaskDatabase extends BaseDatabase {
           creatorUserNickname: element.nickname
         }
       })
+
       const tasks = {
         tasks: resultModified
       }
       return tasks
-      
+
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+
+  async getDelayedTask(): Promise <Object | boolean> {
+    try {
+      const result = await BaseDatabase
+        .connection.raw(`
+          SELECT  task.id as task_id,
+          task.title,
+          task.description,
+          task.limit_date,
+          task.status,
+          user.id as user_id,
+          user.nickname
+          FROM todolist_challenge_task as task
+          JOIN todolist_challenge_user as user
+          ON user.id = task.creator_user_id
+          WHERE task.limit_date < CURDATE()
+          AND task.status <> "done"
+        `)
+
+        const resultModified = result[0].map((element:any) => {
+          return {
+            taskId: element.task_id,
+            title: element.title,
+            description: element.description,
+            limitDate: new ManageDate().date_fmt(element.limit_date),
+            status: element.status,
+            creatorUserId: element.user_id,
+            creatorUserNickname: element.nickname
+          }
+        })
+
+        const tasks = {
+          tasks: resultModified
+        }
+        return tasks
     } catch (error) {
       console.log(error)
       return false
