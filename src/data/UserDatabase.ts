@@ -2,15 +2,15 @@ import { InterfaceUser } from "../entities/InterfaceUser"
 import BaseDatabase from "./BaseDatabase"
 
 export class UserDatabase extends BaseDatabase {
-  async postCreateUser(id: string, name: string, nickname:string, email: string): Promise <boolean> {
+  async postCreateUser(user: InterfaceUser): Promise <boolean> {
     try {
       await BaseDatabase
         .connection("todolist_challenge_user")
         .insert({
-          id: id,
-          name: name,
-          nickname: nickname,
-          email: email
+          id: user.id,
+          name: user.name,
+          nickname: user.nickname,
+          email: user.email
         })
       return true
 
