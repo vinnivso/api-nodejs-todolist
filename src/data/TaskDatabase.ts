@@ -252,7 +252,7 @@ export class TaskDatabase extends BaseDatabase {
     }
   }
 
-  async findMultipleTaks(id: string[], table: string = "todolist_challenge_task", column: boolean = false): Promise <InterfaceTask | boolean> {
+  async findMultipleTasks(id: string[], table: string = "todolist_challenge_task", column: boolean = false): Promise <InterfaceTask | boolean> {
     try {
       const fieldsToFind = id.map((field) => {
         return {
@@ -374,7 +374,7 @@ export class TaskDatabase extends BaseDatabase {
           tasks: resultModified
         }
         return tasks
-        
+
     } catch (error) {
       console.log(error)
       return false
