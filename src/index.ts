@@ -4,6 +4,7 @@ import { EndpointCreateTask } from "./endpoints/Tasks/EndpointCreateTask"
 import { EndpointDeleteResponsibleTask } from "./endpoints/Tasks/EndpointDeleteResponsibleTask"
 import { EndpointDeleteTask } from "./endpoints/Tasks/EndpointDeleteTask"
 import { EndpointGetDelayedTask } from "./endpoints/Tasks/EndpointGetDelayedTask"
+import { EndpointGetSearchByParameters } from "./endpoints/Tasks/EndpointGetSearchByParameters"
 import { EndpointGetTaskById } from "./endpoints/Tasks/EndpointGetTaskById"
 import { EndpointGetTaskByStatus } from "./endpoints/Tasks/EndpointGetTaskByStatus"
 import { EndpointGetTaskCreatedByUser } from "./endpoints/Tasks/EndpointGetTaskCreatedByUser"
@@ -36,7 +37,7 @@ app.get("/task/:id", new EndpointGetTaskById().getTaskById)
 app.get("/task/:id/responsible", new EndpointGetTaskResponsible().getTaskResponsible)
 app.get("/task/status", new EndpointGetTaskByStatus().getTaskByStatus)
 app.get("/task/delayed", new EndpointGetDelayedTask().getDelayedTask)
-
+app.get("/task/search", new EndpointGetSearchByParameters().getSearchByParameters);
 
 
 //posts and puts
